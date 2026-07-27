@@ -1,17 +1,15 @@
-// Routes aislop.codes/vynil-room/* to the vinyl-room Cloudflare Pages project.
+// Routes aislop.codes/vynil-room/* to the vinyl-room app's Cloudflare Worker deployment.
 //
-// Cloudflare's "custom domain" binding on a Pages project maps a whole hostname to it —
-// there's no built-in way to scope that to just a subpath, which is what's needed here so
-// aislop.codes/ can later host a separate homepage while /vynil-room keeps serving this app.
-// This Worker sits in front of the domain and, for any request under /vynil-room, strips that
-// prefix and forwards to the Pages project's own *.pages.dev origin (the app's build output
-// lives at the plain root there — e.g. /assets/..., not /vynil-room/assets/... — since Vite's
-// `base` setting only changes what paths the browser is told to request, not the on-disk
-// layout of the build). Requests outside /vynil-room are left alone for the future homepage.
-//
-// Replace PAGES_PROJECT_ORIGIN below with your actual *.pages.dev domain before deploying.
+// Cloudflare's "custom domain" binding on a project maps a whole hostname to it — there's no
+// built-in way to scope that to just a subpath, which is what's needed here so aislop.codes/
+// can later host a separate homepage while /vynil-room keeps serving this app. This Worker
+// sits in front of the domain and, for any request under /vynil-room, strips that prefix and
+// forwards to the app's own *.workers.dev origin (the app's build output lives at the plain
+// root there — e.g. /assets/..., not /vynil-room/assets/... — since Vite's `base` setting only
+// changes what paths the browser is told to request, not the on-disk layout of the build).
+// Requests outside /vynil-room are left alone for the future homepage.
 
-const PAGES_PROJECT_ORIGIN = 'https://spotify-vynil-room.pages.dev';
+const APP_ORIGIN = 'https://vynilroom.wvstvvzy4g.workers.dev';
 const MOUNT_PATH = '/vynil-room';
 
 export default {
@@ -23,7 +21,7 @@ export default {
     }
 
     const forwardedPath = url.pathname.slice(MOUNT_PATH.length) || '/';
-    const target = new URL(`${forwardedPath}${url.search}`, PAGES_PROJECT_ORIGIN);
+    const target = new URL(`${forwardedPath}${url.search}`, APP_ORIGIN);
 
     return fetch(target, request);
   },
