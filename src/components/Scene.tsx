@@ -285,9 +285,10 @@ export function Scene({
         onClick={onOpenHelp}
         aria-label="Controls"
         title="Controls"
-        className="absolute left-[2%] top-[2%] flex h-8 w-8 items-center justify-center rounded-full text-xl leading-none text-[#d2b48c] drop-shadow-md transition hover:brightness-125"
+        className="absolute left-[2%] top-[2%] flex items-center gap-1.5 rounded-full px-2 py-1 text-[#d2b48c] drop-shadow-md transition hover:brightness-125"
       >
-        🎛️
+        <span className="text-xl leading-none">🎛️</span>
+        <span className="text-xs font-semibold uppercase tracking-wide">Controls</span>
       </button>
 
       <button
@@ -295,9 +296,10 @@ export function Scene({
         onClick={onOpenConnection}
         aria-label="Connection"
         title="Connection"
-        className="absolute right-[2%] top-[2%] flex h-8 w-8 items-center justify-center rounded-full text-xl leading-none text-[#d2b48c] drop-shadow-md transition hover:brightness-125"
+        className="absolute right-[2%] top-[2%] flex items-center gap-1.5 rounded-full px-2 py-1 text-[#d2b48c] drop-shadow-md transition hover:brightness-125"
       >
-        🔌
+        <span className="text-xl leading-none">🔌</span>
+        <span className="text-xs font-semibold uppercase tracking-wide">Connection</span>
       </button>
 
       {isHelpOpen && (

@@ -114,7 +114,12 @@ function App() {
       previousTrackRef.current = nowPlaying;
       setSelectedTrack(track);
       if (canControlPlayback && player.deviceId) {
-        playTrackOnDevice(player.deviceId, track.uri).catch((err) => console.error('Playback failed', err));
+        console.log('[auto-advance] playTrackOnDevice: requesting', track.name);
+        playTrackOnDevice(player.deviceId, track.uri)
+          .then(() => console.log('[auto-advance] playTrackOnDevice: succeeded for', track.name))
+          .catch((err) => console.error('[auto-advance] playTrackOnDevice: FAILED for', track.name, err));
+      } else {
+        console.log('[auto-advance] playTrackOnDevice: SKIPPED (canControlPlayback=', canControlPlayback, 'deviceId=', player.deviceId, ')');
       }
     },
     [nowPlaying, canControlPlayback, player.deviceId],
@@ -173,6 +178,7 @@ function App() {
       const idx = current ? shelfPool.findIndex((t) => t.id === current.id) : -1;
       next = shelfPool[(idx + 1) % shelfPool.length];
     }
+    console.log('[auto-advance] handleSkipNext: from', current?.name, 'to', next.name);
     playTrack(next);
   }, [shelfPool, shuffleEnabled, nowPlaying, playTrack]);
 
@@ -199,11 +205,37 @@ function App() {
   // change) and fires the skip once the remaining time elapses.
   useEffect(() => {
     const state = player.playbackState;
-    if (!state || state.paused || state.duration <= 0) return;
+    if (!state) {
+      console.log('[auto-advance] no playbackState (no Premium/device, or SDK not connected)');
+      return;
+    }
+    if (state.paused) {
+      console.log('[auto-advance] paused, not arming', { position: state.position, duration: state.duration });
+      return;
+    }
+    if (state.duration <= 0) {
+      console.log('[auto-advance] duration is 0, not arming yet');
+      return;
+    }
     const remaining = state.duration - state.position;
-    if (remaining <= 0) return;
-    const timeout = setTimeout(handleSkipNext, remaining + 300);
-    return () => clearTimeout(timeout);
+    if (remaining <= 0) {
+      console.log('[auto-advance] remaining <= 0, not arming', { position: state.position, duration: state.duration });
+      return;
+    }
+    console.log('[auto-advance] arming timer', {
+      track: state.track_window?.current_track?.name,
+      position: state.position,
+      duration: state.duration,
+      remaining,
+    });
+    const timeout = setTimeout(() => {
+      console.log('[auto-advance] timer fired, calling handleSkipNext');
+      handleSkipNext();
+    }, remaining + 300);
+    return () => {
+      console.log('[auto-advance] cleanup (clearing timer)');
+      clearTimeout(timeout);
+    };
   }, [player.playbackState, handleSkipNext]);
 
   // Fallback for whenever there's no live Web Playback SDK state to drive the timer above —
