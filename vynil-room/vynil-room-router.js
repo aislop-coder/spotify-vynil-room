@@ -23,6 +23,6 @@ export default {
     const forwardedPath = url.pathname.slice(MOUNT_PATH.length) || '/';
     const target = new URL(`${forwardedPath}${url.search}`, APP_ORIGIN);
 
-    return fetch(target, request);
+    return fetch(new Request(target, request));
   },
 };
