@@ -348,6 +348,7 @@ function App() {
         onCloseSearch={() => setIsSearchOpen(false)}
         onSearchSelect={handleSearchSelect}
         isHelpOpen={isHelpOpen}
+        onOpenHelp={() => setIsHelpOpen(true)}
         onCloseHelp={() => setIsHelpOpen(false)}
         onOpenConnection={() => setIsConnectionOpen(true)}
       />

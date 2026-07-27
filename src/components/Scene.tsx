@@ -55,6 +55,7 @@ interface SceneProps {
   onCloseSearch: () => void;
   onSearchSelect: (track: SpotifyTrack) => void;
   isHelpOpen: boolean;
+  onOpenHelp: () => void;
   onCloseHelp: () => void;
   onOpenConnection: () => void;
   /** Rendered as an overlay bar anchored to the bottom edge of the scene (e.g. connect/status controls). */
@@ -108,6 +109,7 @@ export function Scene({
   onCloseSearch,
   onSearchSelect,
   isHelpOpen,
+  onOpenHelp,
   onCloseHelp,
   onOpenConnection,
   footer,
@@ -277,6 +279,16 @@ export function Scene({
       {isSearchOpen && (
         <TypewriterSearch tracks={shelfPool} onSelect={onSearchSelect} onClose={onCloseSearch} />
       )}
+
+      <button
+        type="button"
+        onClick={onOpenHelp}
+        aria-label="Controls"
+        title="Controls"
+        className="absolute left-[2%] top-[2%] flex h-8 w-8 items-center justify-center rounded-full text-xl leading-none text-[#d2b48c] drop-shadow-md transition hover:brightness-125"
+      >
+        🎛️
+      </button>
 
       <button
         type="button"
