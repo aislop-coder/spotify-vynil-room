@@ -1,0 +1,346 @@
+{
+  "imageWidth": 1535,
+  "imageHeight": 1024,
+  "cubbies": [
+    {
+      "id": "cubby-c1-r1",
+      "type": "cubby",
+      "xPercent": 25.73,
+      "yPercent": 11.52,
+      "widthPercent": 9.19,
+      "heightPercent": 11.72
+    },
+    {
+      "id": "cubby-c1-r2",
+      "type": "cubby",
+      "xPercent": 25.73,
+      "yPercent": 24.22,
+      "widthPercent": 9.19,
+      "heightPercent": 11.43
+    },
+    {
+      "id": "cubby-c1-r3",
+      "type": "cubby",
+      "xPercent": 25.73,
+      "yPercent": 36.62,
+      "widthPercent": 9.19,
+      "heightPercent": 11.33
+    },
+    {
+      "id": "cubby-c1-r4",
+      "type": "cubby",
+      "xPercent": 25.73,
+      "yPercent": 48.93,
+      "widthPercent": 9.19,
+      "heightPercent": 11.13
+    },
+    {
+      "id": "cubby-c2-r1",
+      "type": "cubby",
+      "xPercent": 35.5,
+      "yPercent": 11.52,
+      "widthPercent": 8.86,
+      "heightPercent": 11.72
+    },
+    {
+      "id": "cubby-c2-r2",
+      "type": "cubby",
+      "xPercent": 35.5,
+      "yPercent": 24.22,
+      "widthPercent": 8.86,
+      "heightPercent": 11.43
+    },
+    {
+      "id": "cubby-c2-r3",
+      "type": "cubby",
+      "xPercent": 35.5,
+      "yPercent": 36.62,
+      "widthPercent": 8.86,
+      "heightPercent": 11.33
+    },
+    {
+      "id": "cubby-c2-r4",
+      "type": "cubby",
+      "xPercent": 35.5,
+      "yPercent": 48.93,
+      "widthPercent": 8.86,
+      "heightPercent": 11.13
+    },
+    {
+      "id": "cubby-c3-r1",
+      "type": "cubby",
+      "xPercent": 60.13,
+      "yPercent": 11.52,
+      "widthPercent": 11.21,
+      "heightPercent": 11.72
+    },
+    {
+      "id": "cubby-c3-r2",
+      "type": "cubby",
+      "xPercent": 60.13,
+      "yPercent": 24.22,
+      "widthPercent": 11.21,
+      "heightPercent": 11.43
+    },
+    {
+      "id": "cubby-c3-r3",
+      "type": "cubby",
+      "xPercent": 60.13,
+      "yPercent": 36.62,
+      "widthPercent": 11.21,
+      "heightPercent": 11.33
+    },
+    {
+      "id": "cubby-c3-r4",
+      "type": "cubby",
+      "xPercent": 60.13,
+      "yPercent": 48.93,
+      "widthPercent": 11.21,
+      "heightPercent": 11.13
+    },
+    {
+      "id": "cubby-c4-r1",
+      "type": "cubby",
+      "xPercent": 71.92,
+      "yPercent": 11.52,
+      "widthPercent": 9.25,
+      "heightPercent": 11.72
+    },
+    {
+      "id": "cubby-c4-r2",
+      "type": "cubby",
+      "xPercent": 71.92,
+      "yPercent": 24.22,
+      "widthPercent": 9.25,
+      "heightPercent": 11.43
+    },
+    {
+      "id": "cubby-c4-r3",
+      "type": "cubby",
+      "xPercent": 71.92,
+      "yPercent": 36.62,
+      "widthPercent": 9.25,
+      "heightPercent": 11.33
+    },
+    {
+      "id": "cubby-c4-r4",
+      "type": "cubby",
+      "xPercent": 71.92,
+      "yPercent": 48.93,
+      "widthPercent": 9.25,
+      "heightPercent": 11.13
+    }
+  ],
+  "frames": [
+    {
+      "id": "frame-left-top",
+      "type": "frame",
+      "xPercent": 13.94,
+      "yPercent": 11.91,
+      "widthPercent": 6.97,
+      "heightPercent": 15.53
+    },
+    {
+      "id": "frame-left-bottom",
+      "type": "frame",
+      "xPercent": 13.42,
+      "yPercent": 31.45,
+      "widthPercent": 8.79,
+      "heightPercent": 17.38
+    },
+    {
+      "id": "frame-right-top",
+      "type": "frame",
+      "xPercent": 85.99,
+      "yPercent": 13.96,
+      "widthPercent": 9.58,
+      "heightPercent": 23.05
+    },
+    {
+      "id": "frame-right-bottom",
+      "type": "frame",
+      "xPercent": 85.99,
+      "yPercent": 40.82,
+      "widthPercent": 6.78,
+      "heightPercent": 12.89
+    },
+    {
+      "id": "frame-center-now-playing",
+      "type": "frame",
+      "xPercent": 47.88,
+      "yPercent": 25.78,
+      "widthPercent": 8.79,
+      "heightPercent": 19.53
+    },
+    {
+      "id": "frame-desk-page-nav",
+      "type": "frame",
+      "xPercent": 20.07,
+      "yPercent": 54.0,
+      "widthPercent": 2.87,
+      "heightPercent": 6.15
+    }
+  ],
+  "books": [
+    {
+      "id": "book-table-left",
+      "type": "book",
+      "xPercent": 42.67,
+      "yPercent": 83.3,
+      "widthPercent": 8.99,
+      "heightPercent": 5.08,
+      "clipPath": "polygon(0% 69.2%, 3.6% 48.1%, 41.3% 0%, 100% 25%, 65.2% 100%, 7.2% 84.6%)"
+    },
+    {
+      "id": "book-table-right",
+      "type": "book",
+      "xPercent": 60.91,
+      "yPercent": 82.81,
+      "widthPercent": 6.19,
+      "heightPercent": 5.66,
+      "clipPath": "polygon(0% 60.3%, 5.3% 37.9%, 12.6% 12.1%, 27.4% 0%, 85.3% 8.6%, 100% 37.9%, 96.8% 91.4%, 3.2% 100%)"
+    }
+  ],
+  "knobs": [
+    {
+      "id": "knob-prev",
+      "type": "knob",
+      "xPercent": 46.97,
+      "yPercent": 64.55,
+      "widthPercent": 1.56,
+      "heightPercent": 2.34
+    },
+    {
+      "id": "knob-play-pause",
+      "type": "knob",
+      "xPercent": 48.73,
+      "yPercent": 64.84,
+      "widthPercent": 1.43,
+      "heightPercent": 2.15
+    },
+    {
+      "id": "knob-next",
+      "type": "knob",
+      "xPercent": 50.42,
+      "yPercent": 65.43,
+      "widthPercent": 1.17,
+      "heightPercent": 1.76
+    },
+    {
+      "id": "knob-volume-down",
+      "type": "knob",
+      "xPercent": 53.81,
+      "yPercent": 64.65,
+      "widthPercent": 1.56,
+      "heightPercent": 2.34
+    },
+    {
+      "id": "knob-volume-up",
+      "type": "knob",
+      "xPercent": 55.6,
+      "yPercent": 64.55,
+      "widthPercent": 1.69,
+      "heightPercent": 2.54
+    },
+    {
+      "id": "knob-shuffle",
+      "type": "knob",
+      "xPercent": 51.73,
+      "yPercent": 65.04,
+      "widthPercent": 1.82,
+      "heightPercent": 2.73
+    }
+  ],
+  "mediaPanel": {
+    "trigger": {
+      "id": "receiver-screen",
+      "type": "knob",
+      "xPercent": 46.51,
+      "yPercent": 61.62,
+      "widthPercent": 11.27,
+      "heightPercent": 1.46
+    },
+    "panelBounds": {
+      "id": "media-panel-bounds",
+      "type": "frame",
+      "xPercent": 34.01,
+      "yPercent": 57.32,
+      "widthPercent": 32.38,
+      "heightPercent": 17.48
+    },
+    "songTitle": {
+      "id": "media-panel-song-title",
+      "type": "frame",
+      "xPercent": 35.51,
+      "yPercent": 59.08,
+      "widthPercent": 25.86,
+      "heightPercent": 6.64
+    },
+    "buttons": {
+      "previous": {
+        "id": "panel-previous",
+        "type": "knob",
+        "xPercent": 39.09,
+        "yPercent": 66.02,
+        "widthPercent": 3.39,
+        "heightPercent": 5.18
+      },
+      "playPause": {
+        "id": "panel-play-pause",
+        "type": "knob",
+        "xPercent": 42.35,
+        "yPercent": 66.02,
+        "widthPercent": 3.39,
+        "heightPercent": 5.18
+      },
+      "next": {
+        "id": "panel-next",
+        "type": "knob",
+        "xPercent": 45.6,
+        "yPercent": 66.02,
+        "widthPercent": 3.39,
+        "heightPercent": 5.18
+      },
+      "volumeDown": {
+        "id": "panel-volume-down",
+        "type": "knob",
+        "xPercent": 53.29,
+        "yPercent": 66.02,
+        "widthPercent": 3.0,
+        "heightPercent": 5.18
+      },
+      "volumeUp": {
+        "id": "panel-volume-up",
+        "type": "knob",
+        "xPercent": 57.33,
+        "yPercent": 66.02,
+        "widthPercent": 3.45,
+        "heightPercent": 5.18
+      },
+      "shuffle": {
+        "id": "panel-shuffle",
+        "type": "knob",
+        "xPercent": 50.03,
+        "yPercent": 67.0,
+        "widthPercent": 2.08,
+        "heightPercent": 3.13
+      }
+    },
+    "minimize": {
+      "id": "panel-minimize",
+      "type": "knob",
+      "xPercent": 63.8,
+      "yPercent": 55.6,
+      "widthPercent": 2.6,
+      "heightPercent": 3.4
+    }
+  },
+  "typewriter": {
+    "id": "typewriter",
+    "type": "knob",
+    "xPercent": 12.38,
+    "yPercent": 57.81,
+    "widthPercent": 9.64,
+    "heightPercent": 8.11
+  }
+}
