@@ -3,6 +3,7 @@ import { useAuth } from './hooks/useAuth';
 import { useShelfData } from './hooks/useShelfData';
 import { useSpotifyPlayer } from './hooks/useSpotifyPlayer';
 import { usePlaylists } from './hooks/usePlaylists';
+import { useSpotifyClientId } from './hooks/useSpotifyClientId';
 import {
   fetchPlaylistTracks,
   pausePlayback,
@@ -11,10 +12,10 @@ import {
   setPlaybackVolume,
   type SpotifyPlaylistSummary,
 } from './spotify/api';
-import { SPOTIFY_CLIENT_ID } from './spotify/config';
 import { MOCK_TOP_TRACKS, MOCK_TRACKS } from './data/mockTracks';
 import { Scene } from './components/Scene';
 import { PlaylistBook } from './components/PlaylistBook';
+import { ConnectionPaper } from './components/ConnectionPaper';
 import { getShelfCapacity, getShelfPageCount, getShelfPageTracks, prepareTrackPool } from './components/shelfAllocation';
 import type { SpotifyTrack } from './types/spotify';
 
@@ -38,6 +39,7 @@ function App() {
   const shelf = useShelfData(loggedIn);
   const player = useSpotifyPlayer(loggedIn && auth.isPremium);
   const playlistsData = usePlaylists(loggedIn, auth.profile?.id ?? null);
+  const spotifyClientId = useSpotifyClientId();
 
   const [selectedTrack, setSelectedTrack] = useState<SpotifyTrack | null>(null);
   const [isBookOpen, setIsBookOpen] = useState(false);
@@ -51,6 +53,7 @@ function App() {
   const [isNightMode, setIsNightMode] = useState(readStoredNightMode);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isHelpOpen, setIsHelpOpen] = useState(false);
+  const [isConnectionOpen, setIsConnectionOpen] = useState(false);
   const [highlightedTrackId, setHighlightedTrackId] = useState<string | null>(null);
   const volumeRef = useRef(DEFAULT_VOLUME);
   const previousTrackRef = useRef<SpotifyTrack | null>(null);
@@ -253,15 +256,14 @@ function App() {
 
   const footer = (
     <>
-      {!SPOTIFY_CLIENT_ID && (
+      {!spotifyClientId.clientId && (
         <p className="max-w-lg text-xs text-amber-200/90 drop-shadow">
-          Set <code className="text-amber-300">VITE_SPOTIFY_CLIENT_ID</code> in a{' '}
-          <code className="text-amber-300">.env</code> file to connect a real Spotify account.
-          Showing sample records for now.
+          Tap the 🔌 in the top right to connect your own free Spotify app and hear real music —
+          showing sample records for now.
         </p>
       )}
 
-      {SPOTIFY_CLIENT_ID && auth.status === 'logged-out' && (
+      {spotifyClientId.clientId && auth.status === 'logged-out' && (
         <button
           type="button"
           onClick={auth.login}
@@ -331,8 +333,8 @@ function App() {
         onCloseSearch={() => setIsSearchOpen(false)}
         onSearchSelect={handleSearchSelect}
         isHelpOpen={isHelpOpen}
-        onOpenHelp={() => setIsHelpOpen(true)}
         onCloseHelp={() => setIsHelpOpen(false)}
+        onOpenConnection={() => setIsConnectionOpen(true)}
       />
 
       {isBookOpen && (
@@ -358,6 +360,23 @@ function App() {
             setIsBookOpen(false);
             setIsHelpOpen(true);
           }}
+        />
+      )}
+
+      {isConnectionOpen && (
+        <ConnectionPaper
+          isOwnClientId={spotifyClientId.isOwnClientId}
+          onConnect={(clientId) => {
+            spotifyClientId.setClientId(clientId);
+            setIsConnectionOpen(false);
+            auth.login();
+          }}
+          onDisconnect={() => {
+            spotifyClientId.clearClientId();
+            auth.logout();
+            setIsConnectionOpen(false);
+          }}
+          onClose={() => setIsConnectionOpen(false)}
         />
       )}
     </div>

@@ -55,8 +55,8 @@ interface SceneProps {
   onCloseSearch: () => void;
   onSearchSelect: (track: SpotifyTrack) => void;
   isHelpOpen: boolean;
-  onOpenHelp: () => void;
   onCloseHelp: () => void;
+  onOpenConnection: () => void;
   /** Rendered as an overlay bar anchored to the bottom edge of the scene (e.g. connect/status controls). */
   footer?: ReactNode;
 }
@@ -108,8 +108,8 @@ export function Scene({
   onCloseSearch,
   onSearchSelect,
   isHelpOpen,
-  onOpenHelp,
   onCloseHelp,
+  onOpenConnection,
   footer,
 }: SceneProps) {
   const knobActions: Record<string, () => void> = {
@@ -280,12 +280,12 @@ export function Scene({
 
       <button
         type="button"
-        onClick={onOpenHelp}
-        aria-label="Help"
-        title="Help"
-        className="absolute right-[2%] top-[2%] flex h-8 w-8 items-center justify-center rounded-full text-2xl font-bold leading-none text-[#d2b48c] drop-shadow-md transition hover:brightness-125"
+        onClick={onOpenConnection}
+        aria-label="Connection"
+        title="Connection"
+        className="absolute right-[2%] top-[2%] flex h-8 w-8 items-center justify-center rounded-full text-xl leading-none text-[#d2b48c] drop-shadow-md transition hover:brightness-125"
       >
-        ?
+        🔌
       </button>
 
       {isHelpOpen && (

@@ -1,12 +1,12 @@
 import { generateCodeChallenge, generateCodeVerifier } from './pkce';
 import {
   SPOTIFY_AUTH_ENDPOINT,
-  SPOTIFY_CLIENT_ID,
   SPOTIFY_REDIRECT_URI,
   SPOTIFY_SCOPES,
   SPOTIFY_TOKEN_ENDPOINT,
   TOKEN_STORAGE_KEY,
   VERIFIER_STORAGE_KEY,
+  getSpotifyClientId,
 } from './config';
 import type { StoredToken } from '../types/spotify';
 
@@ -29,15 +29,16 @@ export function clearStoredToken() {
 }
 
 export async function redirectToSpotifyLogin() {
-  if (!SPOTIFY_CLIENT_ID) {
-    throw new Error('VITE_SPOTIFY_CLIENT_ID is not configured');
+  const clientId = getSpotifyClientId();
+  if (!clientId) {
+    throw new Error('No Spotify Client ID configured');
   }
   const verifier = generateCodeVerifier();
   const challenge = await generateCodeChallenge(verifier);
   sessionStorage.setItem(VERIFIER_STORAGE_KEY, verifier);
 
   const params = new URLSearchParams({
-    client_id: SPOTIFY_CLIENT_ID,
+    client_id: clientId,
     response_type: 'code',
     redirect_uri: SPOTIFY_REDIRECT_URI,
     scope: SPOTIFY_SCOPES.join(' '),
@@ -53,7 +54,7 @@ async function exchangeCodeForToken(code: string): Promise<StoredToken> {
   if (!verifier) throw new Error('Missing PKCE verifier; restart the login flow');
 
   const body = new URLSearchParams({
-    client_id: SPOTIFY_CLIENT_ID ?? '',
+    client_id: getSpotifyClientId() ?? '',
     grant_type: 'authorization_code',
     code,
     redirect_uri: SPOTIFY_REDIRECT_URI,
@@ -77,7 +78,7 @@ async function exchangeCodeForToken(code: string): Promise<StoredToken> {
 
 async function refreshToken(refresh: string): Promise<StoredToken> {
   const body = new URLSearchParams({
-    client_id: SPOTIFY_CLIENT_ID ?? '',
+    client_id: getSpotifyClientId() ?? '',
     grant_type: 'refresh_token',
     refresh_token: refresh,
   });
@@ -96,7 +97,11 @@ async function refreshToken(refresh: string): Promise<StoredToken> {
   };
 }
 
-/** Call once on app load. If the URL has an OAuth `code`, completes the exchange and cleans the URL. */
+/**
+ * Call once on app load. If the URL has an OAuth `code` (i.e. we're on the /callback redirect),
+ * completes the exchange and sends the URL bar back to the app's base path — there's no real
+ * "/callback" page to show, it's just a landing spot for Spotify's redirect.
+ */
 export async function completeLoginIfRedirected(): Promise<void> {
   const params = new URLSearchParams(window.location.search);
   const code = params.get('code');
@@ -105,10 +110,7 @@ export async function completeLoginIfRedirected(): Promise<void> {
   const token = await exchangeCodeForToken(code);
   writeStoredToken(token);
 
-  params.delete('code');
-  params.delete('state');
-  const cleanUrl = `${window.location.pathname}${params.toString() ? `?${params}` : ''}`;
-  window.history.replaceState({}, '', cleanUrl);
+  window.history.replaceState({}, '', import.meta.env.BASE_URL);
 }
 
 // Spotify rotates (and invalidates) the refresh token on every use in the PKCE flow. Several
