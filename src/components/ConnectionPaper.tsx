@@ -86,6 +86,16 @@ export function ConnectionPaper({ isOwnClientId, onConnect, onDisconnect, onClos
             >
               Connect
             </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="mx-auto mt-3 block text-[10px] font-semibold uppercase tracking-widest text-[#a8823f] underline underline-offset-2 hover:text-[#2a2118]"
+            >
+              Skip for now
+            </button>
+            <p className="mt-2 text-center text-[10px] leading-relaxed text-[#6b5d4f]">
+              You can click the 🔌 in the top right to connect anytime.
+            </p>
           </>
         )}
       </div>

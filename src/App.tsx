@@ -23,6 +23,7 @@ const DEFAULT_VOLUME = 70;
 const VOLUME_STEP = 10;
 const BACK_DOUBLE_PRESS_WINDOW_MS = 5000;
 const NIGHT_MODE_STORAGE_KEY = 'vinyl-shelf.night-mode';
+const CONNECTION_PROMPT_SEEN_KEY = 'vinyl-shelf.connection-prompt-seen';
 const HIGHLIGHT_DURATION_MS = 4000;
 
 function readStoredNightMode(): boolean {
@@ -216,6 +217,20 @@ function App() {
     return () => clearTimeout(timeout);
   }, [nowPlaying, player.playbackState, handleSkipNext]);
 
+  // Surface the Connection paper once per visitor, the first time they show up logged out —
+  // otherwise the 🔌 icon is easy to miss and they'd never discover they can bring their own
+  // Spotify app instead of being capped by a shared app's 5-user Development Mode limit.
+  useEffect(() => {
+    if (auth.status !== 'logged-out') return;
+    try {
+      if (localStorage.getItem(CONNECTION_PROMPT_SEEN_KEY) === '1') return;
+      localStorage.setItem(CONNECTION_PROMPT_SEEN_KEY, '1');
+    } catch {
+      // localStorage unavailable — just show it this once without remembering
+    }
+    setIsConnectionOpen(true);
+  }, [auth.status]);
+
   const handleVolumeChange = useCallback(
     (delta: number) => {
       if (!canControlPlayback || !player.deviceId) return;
@@ -379,6 +394,15 @@ function App() {
           onClose={() => setIsConnectionOpen(false)}
         />
       )}
+
+      <a
+        href="https://github.com/aislop-coder/spotify-vynil-room"
+        target="_blank"
+        rel="noreferrer"
+        className="fixed bottom-1 left-1/2 -translate-x-1/2 text-[10px] text-white/40 underline-offset-2 hover:text-white/70 hover:underline"
+      >
+        View on GitHub
+      </a>
     </div>
   );
 }
