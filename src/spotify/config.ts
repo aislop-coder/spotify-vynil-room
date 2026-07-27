@@ -1,8 +1,11 @@
 export const SPOTIFY_CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID as string | undefined;
 
+// import.meta.env.BASE_URL reflects Vite's `base` config (e.g. '/vynil-room/' when this app
+// is deployed under a subpath rather than a domain's root) — deriving the fallback from it
+// means the redirect URI is correct either way without needing an explicit env var.
 export const SPOTIFY_REDIRECT_URI =
   (import.meta.env.VITE_SPOTIFY_REDIRECT_URI as string | undefined) ??
-  `${window.location.origin}/callback`;
+  `${window.location.origin}${import.meta.env.BASE_URL}callback`;
 
 export const SPOTIFY_SCOPES = [
   'user-read-private',
