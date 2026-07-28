@@ -428,6 +428,16 @@ function App() {
       )}
 
       <a
+        href="/"
+        aria-label="Back to aislop.codes"
+        title="Back to aislop.codes"
+        className="fixed left-2 top-1/2 flex -translate-y-1/2 flex-col items-center gap-1 text-white/40 transition hover:text-white/80"
+      >
+        <span className="text-2xl leading-none">🏠</span>
+        <span className="text-[10px] font-semibold uppercase tracking-wide">Home</span>
+      </a>
+
+      <a
         href="https://github.com/aislop-coder/spotify-vynil-room"
         target="_blank"
         rel="noreferrer"
