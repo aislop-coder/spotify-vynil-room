@@ -18,6 +18,7 @@ import { PlaylistBook } from './components/PlaylistBook';
 import { ConnectionPaper } from './components/ConnectionPaper';
 import { getShelfCapacity, getShelfPageCount, getShelfPageTracks, prepareTrackPool } from './components/shelfAllocation';
 import type { SpotifyTrack } from './types/spotify';
+import type { WebPlaybackState } from './spotify/webPlaybackTypes';
 
 const DEFAULT_VOLUME = 70;
 const VOLUME_STEP = 10;
@@ -60,6 +61,7 @@ function App() {
   const previousTrackRef = useRef<SpotifyTrack | null>(null);
   const lastBackPressRef = useRef(0);
   const highlightTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const prevPlaybackStateRef = useRef<WebPlaybackState | null>(null);
 
   // Memoized on the playbackState reference itself (which only changes when Spotify actually
   // emits a new player_state_changed event) rather than being rebuilt on every App render —
@@ -199,43 +201,40 @@ function App() {
     }
   }, [canControlPlayback, player.deviceId, nowPlaying, playTrack]);
 
-  // Auto-advance when a track finishes on its own. Spotify's SDK has no reliable "ended"
-  // event for single-URI (no context) playback, so instead we arm a timer for exactly how
-  // long is left in the track; it re-arms on every state change (play/pause/seek/track
-  // change) and fires the skip once the remaining time elapses.
+  // Auto-advance when a track finishes on its own. With no context/queue behind a single-URI
+  // play, Spotify doesn't fire any kind of "ended" event — instead the very next state update
+  // simply reports paused at position ~0. A countdown timer alone isn't enough: that update
+  // itself cancels the timer (its cleanup fires on every new state), arriving just before the
+  // timer would have. So the paused-at-~0-after-being-near-the-end transition, compared against
+  // the previous state, is the actual signal to advance — the timer is kept only as a backstop
+  // in case that transition is ever missed.
   useEffect(() => {
+    const prev = prevPlaybackStateRef.current;
     const state = player.playbackState;
-    if (!state) {
-      console.log('[auto-advance] no playbackState (no Premium/device, or SDK not connected)');
-      return;
-    }
+    prevPlaybackStateRef.current = state;
+    if (!state) return;
+
     if (state.paused) {
-      console.log('[auto-advance] paused, not arming', { position: state.position, duration: state.duration });
+      const justFinished =
+        prev &&
+        !prev.paused &&
+        state.position < 1500 &&
+        prev.duration > 0 &&
+        prev.position > prev.duration - 3000;
+      console.log('[auto-advance] paused', { position: state.position, justFinished });
+      if (justFinished) handleSkipNext();
       return;
     }
-    if (state.duration <= 0) {
-      console.log('[auto-advance] duration is 0, not arming yet');
-      return;
-    }
+
+    if (state.duration <= 0) return;
     const remaining = state.duration - state.position;
-    if (remaining <= 0) {
-      console.log('[auto-advance] remaining <= 0, not arming', { position: state.position, duration: state.duration });
-      return;
-    }
-    console.log('[auto-advance] arming timer', {
-      track: state.track_window?.current_track?.name,
-      position: state.position,
-      duration: state.duration,
-      remaining,
-    });
+    if (remaining <= 0) return;
+    console.log('[auto-advance] arming backstop timer', { remaining });
     const timeout = setTimeout(() => {
-      console.log('[auto-advance] timer fired, calling handleSkipNext');
+      console.log('[auto-advance] backstop timer fired');
       handleSkipNext();
     }, remaining + 300);
-    return () => {
-      console.log('[auto-advance] cleanup (clearing timer)');
-      clearTimeout(timeout);
-    };
+    return () => clearTimeout(timeout);
   }, [player.playbackState, handleSkipNext]);
 
   // Fallback for whenever there's no live Web Playback SDK state to drive the timer above —
