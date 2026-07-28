@@ -27,12 +27,14 @@ export function getSpotifyClientId(): string | undefined {
   return readStoredClientId() ?? ENV_CLIENT_ID;
 }
 
-// import.meta.env.BASE_URL reflects Vite's `base` config (e.g. '/vynil-room/' when this app
-// is deployed under a subpath rather than a domain's root) — deriving the fallback from it
-// means the redirect URI is correct either way without needing an explicit env var.
+// The redirect lands on the app's own real index.html (import.meta.env.BASE_URL, e.g.
+// '/vynil-room/') rather than a fake '/callback' route — this app is a monorepo sibling of
+// other apps under the same domain, each served as a static file tree with no server-side
+// routing/fallback of its own, so a real on-disk path is what actually works. Nothing about
+// completing the login cares what the path is — it only ever reads the ?code= query string.
 export const SPOTIFY_REDIRECT_URI =
   (import.meta.env.VITE_SPOTIFY_REDIRECT_URI as string | undefined) ??
-  `${window.location.origin}${import.meta.env.BASE_URL}callback`;
+  `${window.location.origin}${import.meta.env.BASE_URL}`;
 
 export const SPOTIFY_SCOPES = [
   'user-read-private',
